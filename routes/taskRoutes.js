@@ -1,12 +1,12 @@
-// routes/taskRoutes.js
 const express = require("express");
 const router = express.Router();
-const taskController = require("../controllers/taskController");
+const timeController = require("../controllers/timeController");
 
-router.get("/tasks", taskController.getAllTasks);
-router.post("/tasks", taskController.createTask);
-router.get("/tasks/:id", taskController.getTaskById);
-router.put("/tasks/:id", taskController.updateTask);
-router.delete("/tasks/:id", taskController.deleteTask);
+// Define routes
+router.post("/tasks", timeController.createTime);
+router.post("/tasks/:user_id/end", timeController.endTime);
+router.get("/tasks/:id", timeController.getTimeById);
+router.put("/tasks/:id", timeController.updateTime);
+router.delete("/tasks/:id", timeController.deleteTime);
 
 module.exports = router;
