@@ -109,7 +109,7 @@ exports.getTodayTimeByUserId = async (req, res) => {
       isStarted: true,
       data: user,
       startedTime: formattedStartedTime,
-      endTime: formattedEndTime,
+      endTime: times.endTime !== undefined ? formattedEndTime : null,
       totalWorkedMinutes: times.totalWorkedMinutes,
       message: "Time entry found for the user today",
     });
