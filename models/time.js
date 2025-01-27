@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const timeSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Foreign key to User model
-  startTime: { type: Date, required: true },
+  user_id: { type: String, required: true },
+  startTime: { type: Date, default: Date.now },
   endTime: { type: Date },
   totalWorkedMinutes: { type: Number, default: 0 },
   created_date: { type: Date, default: Date.now },
