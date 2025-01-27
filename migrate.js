@@ -7,10 +7,7 @@ const mongoURI = "mongodb://localhost:27017/Database";
 
 // Connect to MongoDB
 mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(mongoURI)
   .then(() => console.log("Connected to MongoDB for migration"))
   .catch((error) => {
     console.error("MongoDB connection error:", error);
@@ -40,9 +37,8 @@ const migrate = async () => {
     console.error("Migration failed:", error);
   } finally {
     // Close the database connection after migration
-    mongoose.connection.close(() => {
-      console.log("MongoDB connection closed.");
-    });
+    await mongoose.connection.close();
+    console.log("MongoDB connection closed.");
   }
 };
 
