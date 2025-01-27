@@ -1,17 +1,24 @@
 const Time = require("../models/time");
 
-exports.getAllTimes = async (req, res) => {
+// Get all time entries by date
+exports.getAllTimeByDate = async (req, res) => {
   try {
-    const times = await Time.find();
-    res.status(200).json(times);
+    const time = await Time.findOne({ created_date: req.params.created_date });
+    if (!time)
+      return res
+        .status(404)
+        .json({ message: "No time entries found for the given date" });
+    res.status(200).json(time);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-exports.createTime = async (req, res) => {
+// Start work
+exports.startWork = async (req, res) => {
   const time = new Time({
-    user_id: req.body.user_id,
+    ...req.body,
+    user: req.body.user_id, // Set user as a foreign key reference
   });
 
   try {
@@ -22,48 +29,32 @@ exports.createTime = async (req, res) => {
   }
 };
 
-exports.endTime = async (req, res) => {
+// End work
+exports.endWork = async (req, res) => {
   try {
-    const time = await Time.findOne({ user_id: req.params.user_id });
-    if (!time) return res.status(404).json({ message: "Time not found" });
-    time.work_end = Date.now();
-    await time.save();
-    res.status(200).json({
-      message: "Time ended",
-      time,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    const time = await Time.findOne({ user: req.params.user_id });
+    if (!time)
+      return res
+        .status(404)
+        .json({ message: "Time entry not found for the user" });
 
-exports.getTimeById = async (req, res) => {
-  try {
-    const time = await Time.findById(req.params.id);
-    if (!time) return res.status(404).json({ message: "Time not found" });
-    res.status(200).json(time);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-exports.updateTime = async (req, res) => {
-  try {
-    const time = await Time.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    if (!time) return res.status(404).json({ message: "Time not found" });
-    res.status(200).json(time);
+    Object.assign(time, req.body);
+    const updatedTime = await time.save();
+    res.status(200).json(updatedTime);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-exports.deleteTime = async (req, res) => {
+// Get all time entries by user ID
+exports.getTimeByUserId = async (req, res) => {
   try {
-    const time = await Time.findByIdAndDelete(req.params.id);
-    if (!time) return res.status(404).json({ message: "Time not found" });
-    res.status(200).json({ message: "Time deleted" });
+    const times = await Time.find({ user: req.params.user_id });
+    if (!times || times.length === 0)
+      return res
+        .status(404)
+        .json({ message: "No time entries found for the user" });
+    res.status(200).json(times);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
