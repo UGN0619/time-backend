@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cron = require("node-cron");
+const os = require("os"); // Import os module to get local IP
 const exportTimesToCsv = require("./utils/exportToCsv");
 const routes = require("./routes/routes"); // Import routes
 
@@ -11,6 +12,21 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+// Function to get the local IP address
+function getLocalIPAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address; // Return the local IP
+      }
+    }
+  }
+  return "127.0.0.1"; // Default to localhost if no IP found
+}
+
+const localIP = getLocalIPAddress();
 
 // Connect to MongoDB
 mongoose
@@ -37,5 +53,8 @@ cron.schedule("0 0 * * *", async () => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running locally at: http://localhost:${port}`);
+  console.log(
+    `Server is accessible on your network at: http://${localIP}:${port}`
+  );
 });

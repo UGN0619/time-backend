@@ -4,12 +4,32 @@ const User = require("../models/user");
 // Get all time entries by date
 exports.getAllTimeByDate = async (req, res) => {
   try {
-    const time = await Time.findOne({ created_date: req.params.created_date });
-    if (!time)
+    // Parse the requested date
+    const date = new Date(req.params.created_date);
+
+    // Validate the date
+    if (isNaN(date.getTime())) {
+      return res.status(400).json({ message: "Invalid date format" });
+    }
+
+    // Define the start and end of the day
+    const startOfDay = new Date(date.setUTCHours(0, 0, 0, 0));
+    const endOfDay = new Date(date.setUTCHours(23, 59, 59, 999));
+
+    // Query for all records within the date range
+    const timeEntries = await Time.find({
+      created_date: { $gte: startOfDay, $lte: endOfDay },
+    });
+
+    // If no entries are found
+    if (!timeEntries.length) {
       return res
         .status(404)
         .json({ message: "No time entries found for the given date" });
-    res.status(200).json(time);
+    }
+
+    // Return the found entries
+    res.status(200).json(timeEntries);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -20,6 +40,8 @@ exports.startWork = async (req, res) => {
   const time = new Time({
     ...req.body,
     user: req.body.user_id, // Set user as a foreign key reference
+    user_name: req.body.user_name,
+    user_workTime: req.body.user_totalWorkingMinutes,
   });
 
   try {
