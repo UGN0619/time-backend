@@ -9,6 +9,10 @@ router.post("/time/end", timeController.endWork); // End work for a user
 router.get("/time/user/:user_id", timeController.getTimeByUserId); // Get all time entries for a user
 router.get("/time/date/:created_date", timeController.getAllTimeByDate); // Get time entries by date
 router.get("/time/today/:user_id", timeController.getTodayTimeByUserId); // Get time entries by date
+router.get(
+  "/time/date/:startDate/:endDate",
+  timeController.getTodayTimeInterval
+);
 
 // User routes
 router.get("/users", userController.getAllUsers); // Get all users

@@ -139,3 +139,23 @@ exports.getTodayTimeByUserId = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getTodayTimeInterval = async (req, res) => {
+  try {
+    const startOfDay = new Date(req.params.startDate);
+    const endOfDay = new Date(req.params.endDate);
+
+    const times = await Time.find({
+      startTime: { $gte: startOfDay, $lte: endOfDay },
+    });
+
+    if (!times || times.length === 0)
+      return res.status(200).json({
+        message: "No time entries found for the user today",
+      });
+
+    res.status(200).json(times);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
