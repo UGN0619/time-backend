@@ -8,8 +8,6 @@ const routes = require("./routes/routes"); // Import routes
 
 const app = express();
 const port = process.env.PORT || 3000;
-const mongoDBurl =
-  process.env.MONGODB_URL || "mongodb://localhost:27017/Database";
 
 // Middleware
 app.use(express.json());
@@ -32,7 +30,7 @@ const localIP = getLocalIPAddress();
 
 // Connect to MongoDB
 mongoose
-  .connect(mongoDBurl, {
+  .connect("mongodb://localhost:27017/Database", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
