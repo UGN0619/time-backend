@@ -8,6 +8,7 @@ const routes = require("./routes/routes"); // Import routes
 
 const app = express();
 const port = process.env.PORT || 3000;
+const mongodbUri = process.env.MONGODB_URI;
 
 // Middleware
 app.use(express.json());
@@ -30,10 +31,13 @@ const localIP = getLocalIPAddress();
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/Database", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://uugantogtokh12:w7OIvSCarXYBXNeg@cluster0.yaghc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("MongoDB connection error:", error));
 
