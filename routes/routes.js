@@ -32,5 +32,7 @@ router.post("/attendance", attendanceController.createAttendance); // Create att
 
 // Student routes
 router.get("/students", studentController.getAllStudents); // Get all students
+router.get("/students/:student_id", studentController.getStudentById); // Get student by ID
+router.post("/students", studentController.createStudent); // Create a new student
 
 module.exports = router;
