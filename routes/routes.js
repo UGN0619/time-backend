@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const timeController = require("../controllers/timeController");
 const userController = require("../controllers/userController");
-const attendanceController = require("../controllers/attendanceController");
-const studentController = require("../controllers/studentController");
+const attendanceController = require("../controllers/attedanceController");
+const studentController = require("../controllers/studentContoller");
 
 // Time routes
 router.post("/time/start", timeController.startWork); // Start work for a user
