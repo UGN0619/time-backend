@@ -55,7 +55,16 @@ exports.startWork = async (req, res) => {
 // End work
 exports.endWork = async (req, res) => {
   try {
-    const time = await Time.findOne({ user_id: req.body.user_id });
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0); // Set to midnight
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999); // Set to end of the day
+
+    const time = await Time.findOne({
+      user_id: req.body.user_id,
+      startTime: { $gte: startOfDay, $lt: endOfDay }, // Ensure it's within today
+    });
     if (!time)
       return res
         .status(404)
