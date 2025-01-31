@@ -121,26 +121,11 @@ exports.getTodayTimeByUserId = async (req, res) => {
         message: "No time entries found for the user today",
       });
 
-    const formattedStartedTime = new Date(times.startTime).toLocaleTimeString(
-      [],
-      {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      }
-    );
-
-    const formattedEndTime = new Date(times.endTime).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
     res.status(200).json({
       isStarted: true,
       data: user,
-      startedTime: formattedStartedTime,
-      endTime: times.endTime !== undefined ? formattedEndTime : null,
+      startedTime: times.startTime,
+      endTime: times.endTime !== undefined ? times.endTime : null,
       totalWorkedMinutes: times.totalWorkedMinutes,
       message: "Time entry found for the user today",
     });
