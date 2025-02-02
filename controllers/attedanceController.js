@@ -3,19 +3,22 @@ const User = require("../models/user");
 const Student = require("../models/student");
 
 // Get all attendance entries by month
+// Get all attendance entries by month
 exports.getAllAttendanceByMonth = async (req, res) => {
   try {
-    // Parse the requested date
-    const date = new Date(req.params.created_date);
+    // Parse the requested month
+    const date = new Date(req.params.month);
 
     // Validate the date
     if (isNaN(date.getTime())) {
       return res.status(400).json({ message: "Invalid date format" });
     }
 
-    // Define the start and end of the month
-    const startOfMonth = new Date(date.setUTCDate(1));
-    const endOfMonth = new Date(date.setUTCDate(0));
+    // Set the start of the month
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+
+    // Set the end of the month by getting the last day of the month
+    const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     // Query for all records within the month range
     const attendanceEntries = await Attedance.find({

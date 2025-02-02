@@ -25,7 +25,7 @@ router.delete("/users/:user_id", userController.deleteUser); // Delete user by I
 
 // Attendance routes
 router.get(
-  "/attendance/month/:created_date",
+  "/attendance/month/:month",
   attendanceController.getAllAttendanceByMonth
 ); // Get all attendance entries by month
 router.post("/attendance", attendanceController.createAttendance); // Create attendance entry
