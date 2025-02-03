@@ -44,6 +44,7 @@ exports.createAttendance = async (req, res) => {
   const attendance = new Attedance({
     user_id: req.body.user_id,
     student_id: req.body.student_id,
+    created_date: req.body.created_date,
   });
 
   try {
@@ -51,5 +52,20 @@ exports.createAttendance = async (req, res) => {
     res.status(201).json(newAttendance);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+//delete attendance
+exports.deleteAttendance = async (req, res) => {
+  try {
+    const attendance = await Attedance.findById(req.params.attendance_id);
+    if (!attendance) {
+      return res.status(404).json({ message: "Attendance not found" });
+    }
+
+    await Attedance.deleteOne({ _id: req.params.attendance_id }); // ✅ Correct method
+    res.json({ message: "Attendance deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

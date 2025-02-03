@@ -29,6 +29,10 @@ router.get(
   attendanceController.getAllAttendanceByMonth
 ); // Get all attendance entries by month
 router.post("/attendance", attendanceController.createAttendance); // Create attendance entry
+router.delete(
+  "/attendance/:attendance_id",
+  attendanceController.deleteAttendance
+); // Delete attendance entry
 
 // Student routes
 router.get("/students", studentController.getAllStudents); // Get all students
