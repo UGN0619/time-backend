@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Time = require("../models/time");
 
 // Get all users
 exports.getAllUsers = async (req, res) => {
@@ -52,9 +53,12 @@ exports.updateUser = async (req, res) => {
 // Delete a user by ID
 exports.deleteUser = async (req, res) => {
   try {
+    const deletedTime = await Time.deleteMany({ user_id: req.params.user_id });
     const deletedUser = await User.findOneAndDelete({
       user_id: req.params.user_id,
     });
+    if (!deletedTime)
+      return res.status(404).json({ message: "Time not found" });
     if (!deletedUser)
       return res.status(404).json({ message: "User not found" });
     res.status(200).json({ message: "User deleted successfully" });
