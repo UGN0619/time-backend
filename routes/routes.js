@@ -25,12 +25,20 @@ router.delete("/users/:user_id", userController.deleteUser); // Delete user by I
 
 // Attendance routes
 router.get(
-  "/attendance/month/:created_date",
+  "/attendance/month/:month",
   attendanceController.getAllAttendanceByMonth
 ); // Get all attendance entries by month
 router.post("/attendance", attendanceController.createAttendance); // Create attendance entry
+router.delete(
+  "/attendance/:attendance_id",
+  attendanceController.deleteAttendance
+); // Delete attendance entry
 
 // Student routes
 router.get("/students", studentController.getAllStudents); // Get all students
+router.get("/students/:student_id", studentController.getStudentById); // Get student by ID
+router.post("/students", studentController.createStudent); // Create a new student
+router.delete("/students/:student_id", studentController.deleteStudent); // Delete student
+router.put("/students/:student_id", studentController.updateStudent); // Update student
 
 module.exports = router;
