@@ -4,6 +4,12 @@ const timeController = require("../controllers/timeController");
 const userController = require("../controllers/userController");
 const attendanceController = require("../controllers/attedanceController");
 const studentController = require("../controllers/studentContoller");
+const {
+  verifyToken,
+  isAdmin,
+  isTeacher,
+  isStudent,
+} = require("../middlewares/authMiddleware");
 
 // Time routes
 router.post("/time/start", timeController.startWork); // Start work for a user
@@ -17,7 +23,7 @@ router.get(
 );
 
 // User routes
-router.get("/users", userController.getAllUsers); // Get all users
+router.get("/users", verifyToken, userController.getAllUsers); // Get all users
 router.post("/users", userController.createUser); // Create a new user
 router.get("/users/:user_id", userController.getUserById); // Get user by ID
 router.put("/users/:user_id", userController.updateUser); // Update user by ID

@@ -5,6 +5,7 @@ const cron = require("node-cron");
 const os = require("os"); // Import os module to get local IP
 const exportTimesToCsv = require("./utils/exportToCsv");
 const routes = require("./routes/routes"); // Import routes
+const authRoutes = require("./routes/auth"); // Import routes
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -42,7 +43,8 @@ mongoose
   .catch((error) => console.error("MongoDB connection error:", error));
 
 // Routes
-app.use("/api", routes); // Prefix all routes with /api
+app.use("/api", routes);
+app.use("/api", authRoutes);
 
 // Schedule CSV export at midnight
 cron.schedule("0 0 * * *", async () => {
