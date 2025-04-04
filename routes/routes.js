@@ -23,7 +23,7 @@ router.get(
 );
 
 // User routes
-router.get("/users", verifyToken, userController.getAllUsers); // Get all users
+router.get("/users", userController.getAllUsers); // Get all users
 router.post("/users", userController.createUser); // Create a new user
 router.get("/users/:user_id", userController.getUserById); // Get user by ID
 router.put("/users/:user_id", userController.updateUser); // Update user by ID
